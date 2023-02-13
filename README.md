@@ -6,7 +6,7 @@
 # 从镜像中取出二进制
 # 编译完成后基于docker cp 从镜像中取出 /usr/local/bin/bfdd-beacon /usr/local/bin/bfdd-control
 
-docker run -d --name kube-ovn-bfdd-base kube-ovn-bfdd-base:v1.12.0  sleep infinity
+docker run -d --name kube-ovn-bfdd-base kube-ovn-bfdd-base:v1.12.0
 docker cp kube-ovn-bfdd-base:/usr/local/bin/bfdd-control .
 docker cp kube-ovn-bfdd-base:/usr/local/bin/bfdd-beacon .
 

@@ -23,7 +23,5 @@ RUN mkdir /bfd/ && cd /bfd/ && curl -L https://github.com/bobz965/OpenBFDD/archi
   make && \
   make install
 
-ENTRYPOINT ["sleep"]
-CMD ["3600"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
 
-# 编译完成后基于docker cp 从镜像中取出 /usr/local/bin/bfdd-beacon /usr/local/bin/bfdd-control
