@@ -1,0 +1,29 @@
+# syntax = docker/dockerfile:experimental
+FROM ubuntu:22.04
+
+ARG ARCH
+ARG NO_AVX512=false
+ARG DEBIAN_FRONTEND=noninteractive
+ENV SRC_DIR='/usr/src'
+
+RUN apt update && apt install -y build-essential fakeroot git curl \
+    autoconf automake bzip2 debhelper-compat dh-exec dh-python dh-sequence-python3 dh-sequence-sphinxdoc \
+    graphviz iproute2 libcap-ng-dev libdbus-1-dev libnuma-dev libpcap-dev libssl-dev libtool libunbound-dev \
+    openssl pkg-config procps python3-all-dev python3-setuptools python3-sortedcontainers python3-sphinx
+
+#ENV BFD="openbfdd-0.5.3"
+#RUN mkdir /bfd/ && cd /bfd/ && curl -L http://cdn.dyn.com/OpenBFDD/openbfdd-0.5.3.tar.gz |  tar -xz -C . && cd ${BFD} && \
+
+# 由于0.5.3之后修复了一些内存泄漏相关的bug，所以所以发了一个版本
+ENV BFD="OpenBFDD-0.5.4"
+RUN mkdir /bfd/ && cd /bfd/ && curl -L https://github.com/bobz965/OpenBFDD/archive/refs/tags/v0.5.4.tar.gz |  tar -xz -C . && \
+  cd ${BFD} && \ 
+  bash -x autogen.sh && \
+  ./configure --enable-silent-rules && \ 
+  make && \
+  make install
+
+ENTRYPOINT ["sleep"]
+CMD ["3600"]
+
+# 编译完成后基于docker cp 从镜像中取出 /usr/local/bin/bfdd-beacon /usr/local/bin/bfdd-control
