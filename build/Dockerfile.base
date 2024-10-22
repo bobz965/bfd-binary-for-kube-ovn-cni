@@ -23,5 +23,7 @@ RUN mkdir /bfd/ && cd /bfd/ && curl -L https://github.com/bobz965/OpenBFDD/archi
   make && \
   make install
 
+RUN mv bfdd-beacon bfdd-beacon-$ARCH && mv bfdd-control bfdd-control-$ARCH
+
 ENTRYPOINT ["tail", "-f", "/dev/null"]
 
